@@ -1,5 +1,5 @@
 //
-//  AppDelegate.swift
+//  CAAppDelegate.swift
 //  ContactsApp
 //
 //  Created by Lavanya on 02/07/18.
@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class CAAppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 

@@ -10,6 +10,8 @@ import UIKit
 
 class CAContactsListTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var contactName: UILabel!
+    @IBOutlet weak var contactImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
