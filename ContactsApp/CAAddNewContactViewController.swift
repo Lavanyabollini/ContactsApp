@@ -145,6 +145,38 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
     }
     
     @IBAction func addNewContact(_ sender: Any) {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? CAAppDelegate else {
+                return
+        }
+        
+        // 1
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        // 2
+        let entity =
+            NSEntityDescription.entity(forEntityName: "ContactDetails",
+                                       in: managedContext)!
+        
+        let contactInfo = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        
+        // 3
+        contactInfo.setValue(firstnameTextField.text, forKeyPath: "firstName")
+        contactInfo.setValue(lastNameTextField.text, forKeyPath: "lastName")
+        contactInfo.setValue(emailTextField.text, forKeyPath: "emailId")
+        contactInfo.setValue(Int(phoneNumberTextField.text!), forKeyPath: "phoneNumber")
+        contactInfo.setValue(countryTextField.text, forKeyPath: "countryCode")
+        
+        // 4
+        do {
+            try managedContext.save()
+            contactDetails.append(contactInfo)
+            self.navigationController?.popViewController(animated: true)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
     }
     
     func showTextAlertMessage(title: String, message: String,with action1Title: String, action2Title: String,and block: @escaping(() -> ()))  {

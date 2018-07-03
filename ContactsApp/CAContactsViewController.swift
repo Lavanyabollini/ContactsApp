@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class CAContactsViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
     @IBOutlet weak var contactsListTableView: UITableView!
@@ -14,20 +15,46 @@ class CAContactsViewController: UIViewController,UITableViewDelegate,UITableView
 
     var contactArray = [String]()
     var names: [String] = []
+    var contactInformation = [ContactDetails]()
 
     //MARK:- View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //1
+        guard let appDelegate =
+            UIApplication.shared.delegate as? CAAppDelegate else {
+                return
+        }
+        
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        
+        //2
+        let fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "ContactDetails")
+        
+        //3
+        do {
+            contactInformation = try managedContext.fetch(fetchRequest) as! [ContactDetails]
+            self.contactsListTableView.reloadData()
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
     //MARK:- UItableview datasource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.names.count
+        return self.contactInformation.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell:CAContactsListTableViewCell = tableView.dequeueReusableCell(withIdentifier: "ContactsCell", for: indexPath) as! CAContactsListTableViewCell
-        cell.contactName.text = names[indexPath.row]
+        let personDetails = contactInformation[indexPath.row]
+        cell.contactName.text =  personDetails.value(forKeyPath: "firstName") as? String
         
         return cell
     }
