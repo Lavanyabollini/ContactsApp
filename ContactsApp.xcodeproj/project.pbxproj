@@ -15,6 +15,7 @@
 		BF4F1F2120EA519E00C37679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF4F1F1F20EA519E00C37679 /* LaunchScreen.storyboard */; };
 		BF4F1F2920EA55A300C37679 /* CAContactsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */; };
 		BF4F1F2B20EA62E300C37679 /* CAAddNewContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */; };
+		BFB1C02C20EB69C0007A5F87 /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		BF4F1F2220EA519E00C37679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAContactsListTableViewCell.swift; sourceTree = "<group>"; };
 		BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAAddNewContactViewController.swift; sourceTree = "<group>"; };
+		BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */,
 				BF4F1F1720EA518800C37679 /* Main.storyboard */,
 				BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */,
+				BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */,
 				BF4F1F1D20EA519E00C37679 /* Assets.xcassets */,
 				BF4F1F1F20EA519E00C37679 /* LaunchScreen.storyboard */,
 				BF4F1F2220EA519E00C37679 /* Info.plist */,
@@ -147,6 +150,7 @@
 				BF4F1F1C20EA518A00C37679 /* ContactsApp.xcdatamodeld in Sources */,
 				BF4F1F2B20EA62E300C37679 /* CAAddNewContactViewController.swift in Sources */,
 				BF4F1F1620EA518800C37679 /* CAContactsViewController.swift in Sources */,
+				BFB1C02C20EB69C0007A5F87 /* CameraHandler.swift in Sources */,
 				BF4F1F2920EA55A300C37679 /* CAContactsListTableViewCell.swift in Sources */,
 				BF4F1F1420EA518800C37679 /* CAAppDelegate.swift in Sources */,
 			);
