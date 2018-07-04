@@ -140,7 +140,7 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
     
     
     @IBAction func addNewContact(_ sender: Any) {
-        
+        if !((firstnameTextField.text?.isEmpty)! || (lastNameTextField.text?.isEmpty)!||(emailTextField.text?.isEmpty)! || (phoneNumberTextField.text?.isEmpty)!||(countryTextField.text?.isEmpty)!){
        
         guard let appDelegate =
             UIApplication.shared.delegate as? CAAppDelegate else {
@@ -176,6 +176,11 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
             self.navigationController?.popViewController(animated: true)
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
+        }
+        }else{
+            self.showTextAlertMessage(title: "ContactsApp", message: "Please enter all the fields", with: "Cancel", action2Title: "OK") {
+                
+            }
         }
     }
     
