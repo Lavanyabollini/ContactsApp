@@ -62,18 +62,66 @@
 		BF4F1F1220EA518700C37679 /* ContactsApp */ = {
 			isa = PBXGroup;
 			children = (
-				BF4F1F1320EA518800C37679 /* CAAppDelegate.swift */,
-				BF4F1F1520EA518800C37679 /* CAContactsViewController.swift */,
-				BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */,
-				BF4F1F1720EA518800C37679 /* Main.storyboard */,
-				BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */,
-				BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */,
-				BF4F1F1D20EA519E00C37679 /* Assets.xcassets */,
-				BF4F1F1F20EA519E00C37679 /* LaunchScreen.storyboard */,
-				BF4F1F2220EA519E00C37679 /* Info.plist */,
-				BF4F1F1A20EA518900C37679 /* ContactsApp.xcdatamodeld */,
+				BF87E94C20ECDCF600D19575 /* AppDelegate */,
+				BF87E94720ECDC9D00D19575 /* ViewControllers */,
+				BF87E94B20ECDCE400D19575 /* Model */,
+				BF87E94820ECDCB500D19575 /* Storyboard */,
+				BF87E94920ECDCC900D19575 /* Supporting files */,
+				BF87E94A20ECDCD600D19575 /* Coredata */,
 			);
 			path = ContactsApp;
+			sourceTree = "<group>";
+		};
+		BF87E94720ECDC9D00D19575 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				BF4F1F1520EA518800C37679 /* CAContactsViewController.swift */,
+				BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */,
+				BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		BF87E94820ECDCB500D19575 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				BF4F1F1720EA518800C37679 /* Main.storyboard */,
+				BF4F1F1F20EA519E00C37679 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		BF87E94920ECDCC900D19575 /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				BF4F1F2220EA519E00C37679 /* Info.plist */,
+				BF4F1F1D20EA519E00C37679 /* Assets.xcassets */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		BF87E94A20ECDCD600D19575 /* Coredata */ = {
+			isa = PBXGroup;
+			children = (
+				BF4F1F1A20EA518900C37679 /* ContactsApp.xcdatamodeld */,
+			);
+			path = Coredata;
+			sourceTree = "<group>";
+		};
+		BF87E94B20ECDCE400D19575 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		BF87E94C20ECDCF600D19575 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				BF4F1F1320EA518800C37679 /* CAAppDelegate.swift */,
+			);
+			path = AppDelegate;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -297,7 +345,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = ContactsApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ContactsApp/Supporting files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -314,7 +362,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = ContactsApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ContactsApp/Supporting files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
