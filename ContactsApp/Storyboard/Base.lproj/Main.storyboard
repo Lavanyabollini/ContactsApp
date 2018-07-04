@@ -203,7 +203,6 @@
                                                         </accessibility>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="42" id="FXA-Va-wN8"/>
-                                                            <constraint firstAttribute="width" constant="333" id="JBS-TC-ePc"/>
                                                         </constraints>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="17"/>
@@ -246,7 +245,6 @@
                                                             <bool key="isElement" value="YES"/>
                                                         </accessibility>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="331" id="dkM-9x-xGt"/>
                                                             <constraint firstAttribute="height" constant="42" id="tR8-bL-eoY"/>
                                                         </constraints>
                                                         <nil key="textColor"/>
@@ -291,7 +289,6 @@
                                                         </accessibility>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="42" id="gWX-Ci-cF4"/>
-                                                            <constraint firstAttribute="width" constant="333" id="pLQ-is-7k0"/>
                                                         </constraints>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="17"/>
@@ -364,7 +361,6 @@
                                                 </accessibility>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="BMN-7V-NIA"/>
-                                                    <constraint firstAttribute="width" constant="333" id="iSF-uU-fhJ"/>
                                                 </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="17"/>
