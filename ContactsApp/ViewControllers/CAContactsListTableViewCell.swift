@@ -15,6 +15,8 @@ class CAContactsListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        contactImage.layer.cornerRadius = contactImage.frame.size.height / 2
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -22,5 +24,7 @@ class CAContactsListTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    override func prepareForReuse() {
+        self.contactImage.image = nil
+    }
 }

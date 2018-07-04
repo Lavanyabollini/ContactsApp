@@ -34,13 +34,13 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
     override func viewDidLoad() {
         super.viewDidLoad()
            firstnameTextField.becomeFirstResponder()
+        //Navigation title
        title = "Add Contact"
+        //method to get countrycode list
         getContryCodeList()
         picker.delegate = self
         picker.dataSource = self
-        contactImageView.layer.cornerRadius = contactImageView.frame.size.height / 2
 
-        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -52,15 +52,8 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
        
     }
     
+    //API for fetching country code
     func getContryCodeList(){
-//        var url = NSURL(string: "https://restcountries.eu/rest/v1/all")
-//
-//        let task = URLSession.sharedSession.dataTaskWithURL(url as! URL) {(data, response, error) in
-//            print(NSString(data: data, encoding: NSUTF8StringEncoding))
-//        }
-//
-//        task.resume()
-        
         guard let url = URL(string: "https://restcountries.eu/rest/v1/all") else {return}
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let dataResponse = data,
@@ -91,6 +84,7 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         task.resume()
     }
 
+    //MARK:_ IBAction
     @IBAction func addImage(_ sender: Any) {
         self.editImage()
     }
@@ -136,7 +130,7 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         }
         
     }
-    
+    //MARK:- UIImagepicker delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             contactImageView.image = pickedImage
@@ -144,7 +138,10 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         }
     }
     
+    
     @IBAction func addNewContact(_ sender: Any) {
+        
+       
         guard let appDelegate =
             UIApplication.shared.delegate as? CAAppDelegate else {
                 return
@@ -168,6 +165,9 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         contactInfo.setValue(emailTextField.text, forKeyPath: "emailId")
         contactInfo.setValue(Int(phoneNumberTextField.text!), forKeyPath: "phoneNumber")
         contactInfo.setValue(countryTextField.text, forKeyPath: "countryCode")
+        let imageData =  NSData(data: UIImageJPEGRepresentation(contactImageView.image!, 1.0)!) 
+        contactInfo.setValue(imageData, forKeyPath: "contactImage")
+
         
         // 4
         do {
@@ -179,6 +179,20 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         }
     }
     
+    func isValidEmail(testStr:String) -> Bool {
+        print("validate emilId: \(testStr)")
+        let emailRegEx = "^(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?(?:(?:(?:[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+(?:\\.[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+)*)|(?:\"(?:(?:(?:(?: )*(?:(?:[!#-Z^-~]|\\[|\\])|(?:\\\\(?:\\t|[ -~]))))+(?: )*)|(?: )+)\"))(?:@)(?:(?:(?:[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)(?:\\.[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)*)|(?:\\[(?:(?:(?:(?:(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))\\.){3}(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))))|(?:(?:(?: )*[!-Z^-~])*(?: )*)|(?:[Vv][0-9A-Fa-f]+\\.[-A-Za-z0-9._~!$&'()*+,;=:]+))\\])))(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?$"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let result = emailTest.evaluate(with: testStr)
+        return result
+    }
+    
+    func validatePhoneNumber(value: String) -> Bool {
+        let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
+        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+        let result =  phoneTest.evaluate(with: value)
+        return result
+    }
     func showTextAlertMessage(title: String, message: String,with action1Title: String, action2Title: String,and block: @escaping(() -> ()))  {
         let alertcontroller = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
         let action1 = UIAlertAction.init(title: action1Title, style: .default, handler: nil)
@@ -205,10 +219,37 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
             lastNameTextField.resignFirstResponder()
             emailTextField.becomeFirstResponder()
         }else if textField == emailTextField{
+            if self.isValidEmail(testStr: emailTextField.text!) == true{
             emailTextField.resignFirstResponder()
             phoneNumberTextField.becomeFirstResponder()
+            }else{
+                self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid email Id", with: "Cancel", action2Title: "Ok") {
+                    self.emailTextField.becomeFirstResponder()
+                }
+            }
         }else if textField == phoneNumberTextField{
+            if validatePhoneNumber(value: phoneNumberTextField.text!) == true{
             phoneNumberTextField.resignFirstResponder()
+            }else{
+                self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid Phone number", with: "Cancel", action2Title: "Ok") {
+                    self.phoneNumberTextField.becomeFirstResponder()
+                }
+            }
+        }
+        return true
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.tag == 4{
+            return false
+        }
+        if textField.tag == 3 {
+            if textField.text!.count > 9{
+                if string == ""{
+                    return true
+                }else{
+                    return false
+                }
+            }
         }
         return true
     }
