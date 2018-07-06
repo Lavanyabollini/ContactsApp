@@ -141,46 +141,23 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
     
     @IBAction func addNewContact(_ sender: Any) {
         if !((firstnameTextField.text?.isEmpty)! || (lastNameTextField.text?.isEmpty)!||(emailTextField.text?.isEmpty)! || (phoneNumberTextField.text?.isEmpty)!||(countryTextField.text?.isEmpty)!){
-       
-        guard let appDelegate =
-            UIApplication.shared.delegate as? CAAppDelegate else {
-                return
-        }
-        
-        // 1
-        let managedContext =
-            appDelegate.persistentContainer.viewContext
-        
-        // 2
-        let entity =
-            NSEntityDescription.entity(forEntityName: "ContactDetails",
-                                       in: managedContext)!
-        
-        let contactInfo = NSManagedObject(entity: entity,
-                                     insertInto: managedContext)
-        
-        // 3
-        contactInfo.setValue(firstnameTextField.text, forKeyPath: "firstName")
-        contactInfo.setValue(lastNameTextField.text, forKeyPath: "lastName")
-        contactInfo.setValue(emailTextField.text, forKeyPath: "emailId")
-        contactInfo.setValue(Int(phoneNumberTextField.text!), forKeyPath: "phoneNumber")
-        contactInfo.setValue(countryTextField.text, forKeyPath: "countryCode")
-        let imageData =  NSData(data: UIImageJPEGRepresentation(contactImageView.image!, 1.0)!) 
-        contactInfo.setValue(imageData, forKeyPath: "contactImage")
-
-        
-        // 4
-        do {
-            try managedContext.save()
-            contactDetails.append(contactInfo)
-            self.navigationController?.popViewController(animated: true)
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-        }
+            if self.isValidEmail(testStr: emailTextField.text!) == true{
+                if (phoneNumberTextField.text!.isPhoneNumber == true) && (phoneNumberTextField.text!.count == 10){
+                    self.storeContactDetailsInCoredata()
+                }else{
+                    self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid Phone number", with: "Cancel", action2Title: "Ok") {
+                        self.phoneNumberTextField.becomeFirstResponder()
+                    }
+                }
+            }else{
+                self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid email Id", with: "Cancel", action2Title: "Ok") {
+                    self.emailTextField.becomeFirstResponder()
+                }
+            }
         }else{
             self.showTextAlertMessage(title: "ContactsApp", message: "Please enter all the fields", with: "Cancel", action2Title: "OK") {
-                
             }
+            
         }
     }
     
@@ -192,12 +169,14 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         return result
     }
     
-    func validatePhoneNumber(value: String) -> Bool {
-        let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
-        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-        let result =  phoneTest.evaluate(with: value)
-        return result
-    }
+//    func validatePhoneNumber(value: String) -> Bool {
+//      //  let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
+//        let PHONE_REGEX = "\\A[0-9]{8}\\z"
+//
+//        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+//        let result =  phoneTest.evaluate(with: value)
+//        return result
+//    }
     func showTextAlertMessage(title: String, message: String,with action1Title: String, action2Title: String,and block: @escaping(() -> ()))  {
         let alertcontroller = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
         let action1 = UIAlertAction.init(title: action1Title, style: .default, handler: nil)
@@ -209,6 +188,37 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         present(alertcontroller, animated: true, completion: nil)
     }
     
+        
+        func storeContactDetailsInCoredata(){
+
+            
+            // 2
+            let entity =
+                NSEntityDescription.entity(forEntityName: "ContactDetails",
+                                           in: SharedManager.sharedInstance.managedObjectContext())!
+            
+            let contactInfo = NSManagedObject(entity: entity,
+                                              insertInto: SharedManager.sharedInstance.managedObjectContext())
+            
+            // 3
+            contactInfo.setValue(firstnameTextField.text, forKeyPath: "firstName")
+            contactInfo.setValue(lastNameTextField.text, forKeyPath: "lastName")
+            contactInfo.setValue(emailTextField.text, forKeyPath: "emailId")
+            contactInfo.setValue(Int(phoneNumberTextField.text!), forKeyPath: "phoneNumber")
+            contactInfo.setValue(countryTextField.text, forKeyPath: "countryCode")
+            let imageData =  NSData(data: UIImageJPEGRepresentation(contactImageView.image!, 1.0)!)
+            contactInfo.setValue(imageData, forKeyPath: "contactImage")
+            
+            
+            // 4
+            do {
+                try SharedManager.sharedInstance.managedObjectContext().save()
+                contactDetails.append(contactInfo)
+                self.navigationController?.popViewController(animated: true)
+            } catch let error as NSError {
+                print("Could not save. \(error), \(error.userInfo)")
+            }
+        }
     //MARK:- UITextfield Delegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.tag == 4{
@@ -233,7 +243,7 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
                 }
             }
         }else if textField == phoneNumberTextField{
-            if validatePhoneNumber(value: phoneNumberTextField.text!) == true{
+            if phoneNumberTextField.text!.isPhoneNumber == true{
             phoneNumberTextField.resignFirstResponder()
             }else{
                 self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid Phone number", with: "Cancel", action2Title: "Ok") {
@@ -342,5 +352,21 @@ extension CAAddNewContactViewController {
     // Handle Tap Guesture used to open the links or Images in other page or controller
     @objc func handleTapHideKeyboard(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
+    }
+}
+
+extension String {
+    var isPhoneNumber: Bool {
+        do {
+            let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
+            let matches = detector.matches(in: self, options: [], range: NSMakeRange(0, self.count))
+            if let res = matches.first {
+                return res.resultType == .phoneNumber && res.range.location == 0 && res.range.length == self.count
+            } else {
+                return false
+            }
+        } catch {
+            return false
+        }
     }
 }

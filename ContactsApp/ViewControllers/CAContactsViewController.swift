@@ -30,16 +30,16 @@ class CAContactsViewController: UIViewController,UITableViewDelegate,UITableView
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        guard let appDelegate =
-            UIApplication.shared.delegate as? CAAppDelegate else {
-                return
-        }
-        let managedContext = appDelegate.persistentContainer.viewContext
+      self.fetchDataFromStorage()
+    }
+    
+    func fetchDataFromStorage(){
+        
         let fetchRequest =
             NSFetchRequest<NSManagedObject>(entityName: "ContactDetails")
-
+        
         do {
-            contactInformation = try managedContext.fetch(fetchRequest) as! [ContactDetails]
+            contactInformation = try SharedManager.sharedInstance.managedObjectContext().fetch(fetchRequest) as! [ContactDetails]
             contactArray = contactInformation
             self.contactsListTableView.reloadData()
         } catch let error as NSError {
@@ -66,6 +66,43 @@ class CAContactsViewController: UIViewController,UITableViewDelegate,UITableView
         return cell
     }
 
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle:   UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            let fetchRequest =
+                NSFetchRequest<NSFetchRequestResult>(entityName: "ContactDetails")
+//            fetchRequest.predicate = NSPredicate(format: "firstName = %@", "firstName")
+//            fetchRequest.predicate = Predicate.init(format: "firstName == \(firstName)")
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest )
+
+
+         //   var details = [ContactDetails]()
+
+            do {
+//                details = try SharedManager.sharedInstance.managedObjectContext().fetch(fetchRequest) as! [ContactDetails]
+//                for object in details {
+//                    SharedManager.sharedInstance.managedObjectContext().delete(object)
+//                }
+//                try SharedManager.sharedInstance.managedObjectContext().save()
+                try SharedManager.sharedInstance.managedObjectContext().execute(deleteRequest)
+                try SharedManager.sharedInstance.managedObjectContext().save()
+              //  self.contactsListTableView.beginUpdates()
+//                self.contactsListTableView.deleteRows(at: [indexPath], with: .automatic)
+//                self.contactsListTableView.reloadData()
+                self.fetchDataFromStorage()
+
+             //   self.contactsListTableView.endUpdates()
+            } catch _ {
+                // error handling
+                 fatalError("Could not fetch")
+            }
+            //Reload tableView
+            
+        }
+    }
     //MARK:- IBAction methods
     @IBAction func addContact(_ sender: Any) {
     

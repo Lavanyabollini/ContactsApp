@@ -16,6 +16,7 @@
 		BF4F1F2920EA55A300C37679 /* CAContactsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */; };
 		BF4F1F2B20EA62E300C37679 /* CAAddNewContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */; };
 		BFB1C02C20EB69C0007A5F87 /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */; };
+		BFE536AE20EF71F400BCCC44 /* SharedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE536AD20EF71F400BCCC44 /* SharedManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAContactsListTableViewCell.swift; sourceTree = "<group>"; };
 		BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAAddNewContactViewController.swift; sourceTree = "<group>"; };
 		BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
+		BFE536AD20EF71F400BCCC44 /* SharedManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				BF87E94C20ECDCF600D19575 /* AppDelegate */,
 				BF87E94720ECDC9D00D19575 /* ViewControllers */,
 				BF87E94B20ECDCE400D19575 /* Model */,
+				BFE536AA20EF71BB00BCCC44 /* SharedManager */,
 				BF87E94820ECDCB500D19575 /* Storyboard */,
 				BF87E94920ECDCC900D19575 /* Supporting files */,
 				BF87E94A20ECDCD600D19575 /* Coredata */,
@@ -122,6 +125,15 @@
 				BF4F1F1320EA518800C37679 /* CAAppDelegate.swift */,
 			);
 			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		BFE536AA20EF71BB00BCCC44 /* SharedManager */ = {
+			isa = PBXGroup;
+			children = (
+				BFE536AD20EF71F400BCCC44 /* SharedManager.swift */,
+			);
+			name = SharedManager;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFE536AE20EF71F400BCCC44 /* SharedManager.swift in Sources */,
 				BF4F1F1C20EA518A00C37679 /* ContactsApp.xcdatamodeld in Sources */,
 				BF4F1F2B20EA62E300C37679 /* CAAddNewContactViewController.swift in Sources */,
 				BF4F1F1620EA518800C37679 /* CAContactsViewController.swift in Sources */,
