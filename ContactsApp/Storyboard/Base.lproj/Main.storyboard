@@ -46,7 +46,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K95-8h-5pW">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K95-8h-5pW">
                                                     <rect key="frame" x="15" y="8" width="60" height="57"/>
                                                     <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
@@ -321,7 +321,7 @@
                                                     <constraint firstItem="RdH-le-5IK" firstAttribute="leading" secondItem="mF4-6p-JRK" secondAttribute="leading" constant="2" id="J6d-b3-PSc"/>
                                                 </constraints>
                                             </view>
-                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contactImage" translatesAutoresizingMaskIntoConstraints="NO" id="GBp-cI-Svb">
+                                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contactImage" translatesAutoresizingMaskIntoConstraints="NO" id="GBp-cI-Svb">
                                                 <rect key="frame" x="132" y="25" width="111" height="114"/>
                                                 <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <gestureRecognizers/>
@@ -329,6 +329,11 @@
                                                     <constraint firstAttribute="height" constant="114" id="YNO-gh-H0Z"/>
                                                     <constraint firstAttribute="width" constant="111" id="sN6-ll-ntG"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="60"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUD-os-mRd">
                                                 <rect key="frame" x="109" y="530" width="157" height="45"/>
