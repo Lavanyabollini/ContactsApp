@@ -15,6 +15,7 @@
 		BF4F1F2120EA519E00C37679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF4F1F1F20EA519E00C37679 /* LaunchScreen.storyboard */; };
 		BF4F1F2920EA55A300C37679 /* CAContactsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */; };
 		BF4F1F2B20EA62E300C37679 /* CAAddNewContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */; };
+		BF61080220FE082900544CD8 /* Modelmap0to1.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = BF61080120FE082800544CD8 /* Modelmap0to1.xcmappingmodel */; };
 		BFB1C02C20EB69C0007A5F87 /* CameraHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */; };
 		BFE536AE20EF71F400BCCC44 /* SharedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE536AD20EF71F400BCCC44 /* SharedManager.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,8 @@
 		BF4F1F2220EA519E00C37679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BF4F1F2820EA55A300C37679 /* CAContactsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAContactsListTableViewCell.swift; sourceTree = "<group>"; };
 		BF4F1F2A20EA62E300C37679 /* CAAddNewContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CAAddNewContactViewController.swift; sourceTree = "<group>"; };
+		BF61080020FE07C300544CD8 /* ContactsAppv2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ContactsAppv2.xcdatamodel; sourceTree = "<group>"; };
+		BF61080120FE082800544CD8 /* Modelmap0to1.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Modelmap0to1.xcmappingmodel; sourceTree = "<group>"; };
 		BFB1C02B20EB69C0007A5F87 /* CameraHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraHandler.swift; sourceTree = "<group>"; };
 		BFE536AD20EF71F400BCCC44 /* SharedManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				BF4F1F1A20EA518900C37679 /* ContactsApp.xcdatamodeld */,
+				BF61080120FE082800544CD8 /* Modelmap0to1.xcmappingmodel */,
 			);
 			path = Coredata;
 			sourceTree = "<group>";
@@ -211,6 +215,7 @@
 				BF4F1F1C20EA518A00C37679 /* ContactsApp.xcdatamodeld in Sources */,
 				BF4F1F2B20EA62E300C37679 /* CAAddNewContactViewController.swift in Sources */,
 				BF4F1F1620EA518800C37679 /* CAContactsViewController.swift in Sources */,
+				BF61080220FE082900544CD8 /* Modelmap0to1.xcmappingmodel in Sources */,
 				BFB1C02C20EB69C0007A5F87 /* CameraHandler.swift in Sources */,
 				BF4F1F2920EA55A300C37679 /* CAContactsListTableViewCell.swift in Sources */,
 				BF4F1F1420EA518800C37679 /* CAAppDelegate.swift in Sources */,
@@ -418,9 +423,10 @@
 		BF4F1F1A20EA518900C37679 /* ContactsApp.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BF61080020FE07C300544CD8 /* ContactsAppv2.xcdatamodel */,
 				BF4F1F1B20EA518900C37679 /* ContactsApp.xcdatamodel */,
 			);
-			currentVersion = BF4F1F1B20EA518900C37679 /* ContactsApp.xcdatamodel */;
+			currentVersion = BF61080020FE07C300544CD8 /* ContactsAppv2.xcdatamodel */;
 			path = ContactsApp.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
