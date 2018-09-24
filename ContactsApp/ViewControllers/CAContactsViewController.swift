@@ -71,15 +71,17 @@ class CAContactsViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle:   UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! CAContactsListTableViewCell
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             let fetchRequest =
                 NSFetchRequest<NSFetchRequestResult>(entityName: "ContactDetails")
 //            fetchRequest.predicate = NSPredicate(format: "firstName = %@", "firstName")
-//            fetchRequest.predicate = Predicate.init(format: "firstName == \(firstName)")
+            fetchRequest.predicate = //Predicate.init(format: "firstName == \(firstName)")
+                NSPredicate(format: "firstName == %@", cell.contactName.text!)
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest )
 
 
-         //   var details = [ContactDetails]()
+//            var details = [ContactDetails]()
 
             do {
 //                details = try SharedManager.sharedInstance.managedObjectContext().fetch(fetchRequest) as! [ContactDetails]
