@@ -10,10 +10,10 @@ import UIKit
 import CoreData
 
 class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate,UIGestureRecognizerDelegate,UIPickerViewDelegate,UIPickerViewDataSource {
-   
+    
     
     var contactDetails: [NSManagedObject] = []
-
+    
     @IBOutlet weak var contactDetailScrollView: UIScrollView!
     @IBOutlet weak var contactImageView: UIImageView!
     @IBOutlet weak var addImageButton: UIButton!
@@ -27,29 +27,33 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
     var tap : UITapGestureRecognizer?
     var picker:UIPickerView = UIPickerView()
     var countryCodeArray = [String]()
-
+    var contactInfo = ContactDetails()
+    var isContactInfoExist:Bool = false
     @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
     
     //View life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-           firstnameTextField.becomeFirstResponder()
+        firstnameTextField.becomeFirstResponder()
         //Navigation title
-       title = "Add Contact"
+        title = "Add Contact"
         //method to get countrycode list
         getContryCodeList()
         picker.delegate = self
         picker.dataSource = self
-
+        if isContactInfoExist{
+            addContactButton.setTitle("Update Contact", for: .normal)
+            displayContactDetails()
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
+        
         // add observer to notify when the keyboard opens
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         // add observer to notify when the keyboard close
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-       
+        
     }
     
     //API for fetching country code
@@ -64,16 +68,16 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
                 //here dataResponse received from a network request
                 let jsonResponse = try JSONSerialization.jsonObject(with:
                     dataResponse, options: [])
-//                print(jsonResponse) //Response result
+                //                print(jsonResponse) //Response result
                 guard let jsonArray = jsonResponse as? [[String: Any]] else {
                     return
                 }
-//                print(jsonArray)
+                //                print(jsonArray)
                 for codes in jsonArray{
                     print(codes["alpha2Code"] as? String ?? "")
                     self.countryCodeArray.append((codes["alpha2Code"] as? String)!)
                 }
-               
+                
                 //Now get title value
                 guard let title = jsonArray[0]["alpha2Code"] as? String else { return }
                 print(title) // delectus aut autem
@@ -83,7 +87,22 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         }
         task.resume()
     }
-
+    func displayContactDetails(){
+        
+        if let imageData = contactInfo.value(forKeyPath: "contactImage") as? NSData{
+            if let image = UIImage(data:imageData as Data) {
+                contactImageView.image =  image
+            }
+        }else{
+            contactImageView.image = UIImage(named:"contactImage")
+        }
+        firstnameTextField.text =  contactInfo.value(forKeyPath: "firstName") as? String
+        lastNameTextField.text =  contactInfo.value(forKeyPath: "lastName") as? String
+        emailTextField.text = contactInfo.value(forKeyPath: "emailId")as? String
+         phoneNumberTextField.text  = contactInfo.value(forKeyPath: "phoneNumber") as? String
+        countryTextField.text = contactInfo.value(forKeyPath: "countryCode")as? String
+        
+    }
     //MARK:_ IBAction
     @IBAction func addImage(_ sender: Any) {
         self.editImage()
@@ -143,7 +162,11 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         if !((firstnameTextField.text?.isEmpty)! || (lastNameTextField.text?.isEmpty)!||(emailTextField.text?.isEmpty)! || (phoneNumberTextField.text?.isEmpty)!||(countryTextField.text?.isEmpty)!){
             if self.isValidEmail(testStr: emailTextField.text!) == true{
                 if (phoneNumberTextField.text!.isPhoneNumber == true) && (phoneNumberTextField.text!.count == 10){
+                    if addContactButton.title(for: .normal) == "Add contact"{
                     self.storeContactDetailsInCoredata()
+                    }else{
+                        updateContactDetails()
+                    }
                 }else{
                     self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid Phone number", with: "Cancel", action2Title: "Ok") {
                         self.phoneNumberTextField.becomeFirstResponder()
@@ -169,14 +192,14 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         return result
     }
     
-//    func validatePhoneNumber(value: String) -> Bool {
-//      //  let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
-//        let PHONE_REGEX = "\\A[0-9]{8}\\z"
-//
-//        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
-//        let result =  phoneTest.evaluate(with: value)
-//        return result
-//    }
+    //    func validatePhoneNumber(value: String) -> Bool {
+    //      //  let PHONE_REGEX = "^\\d{3}-\\d{3}-\\d{4}$"
+    //        let PHONE_REGEX = "\\A[0-9]{8}\\z"
+    //
+    //        let phoneTest = NSPredicate(format: "SELF MATCHES %@", PHONE_REGEX)
+    //        let result =  phoneTest.evaluate(with: value)
+    //        return result
+    //    }
     func showTextAlertMessage(title: String, message: String,with action1Title: String, action2Title: String,and block: @escaping(() -> ()))  {
         let alertcontroller = UIAlertController.init(title: title, message: message, preferredStyle: .alert)
         let action1 = UIAlertAction.init(title: action1Title, style: .default, handler: nil)
@@ -188,41 +211,59 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         present(alertcontroller, animated: true, completion: nil)
     }
     
+    
+    func storeContactDetailsInCoredata(){
         
-        func storeContactDetailsInCoredata(){
-
-            
-            // 2
-            let entity =
-                NSEntityDescription.entity(forEntityName: "ContactDetails",
-                                           in: SharedManager.sharedInstance.managedObjectContext())!
-            
-            let contactInfo = NSManagedObject(entity: entity,
-                                              insertInto: SharedManager.sharedInstance.managedObjectContext())
-            
-            // 3
-            contactInfo.setValue(firstnameTextField.text, forKeyPath: "firstName")
-            contactInfo.setValue(lastNameTextField.text, forKeyPath: "lastName")
-            contactInfo.setValue(emailTextField.text, forKeyPath: "emailId")
-            contactInfo.setValue(Int(phoneNumberTextField.text!), forKeyPath: "phoneNumber")
-            contactInfo.setValue(countryTextField.text, forKeyPath: "countryCode")
-            let imageData =  NSData(data: UIImageJPEGRepresentation(contactImageView.image!, 1.0)!)
-            contactInfo.setValue(imageData, forKeyPath: "contactImage")
-            
-            
-            // 4
-            do {
-                try SharedManager.sharedInstance.managedObjectContext().save()
-                contactDetails.append(contactInfo)
-                self.navigationController?.popViewController(animated: true)
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
-            }
+        
+        // 2
+        let entity =
+            NSEntityDescription.entity(forEntityName: "ContactDetails",
+                                       in: SharedManager.sharedInstance.managedObjectContext())!
+        
+         let contactInfo = NSManagedObject(entity: entity,
+                                      insertInto: SharedManager.sharedInstance.managedObjectContext()) as! ContactDetails
+        
+        // 3
+        contactInfo.setValue(firstnameTextField.text, forKeyPath: "firstName")
+        contactInfo.setValue(lastNameTextField.text, forKeyPath: "lastName")
+        contactInfo.setValue(emailTextField.text, forKeyPath: "emailId")
+        contactInfo.setValue(phoneNumberTextField.text!, forKeyPath: "phoneNumber")
+        contactInfo.setValue(countryTextField.text, forKeyPath: "countryCode")
+        let imageData =  NSData(data: UIImageJPEGRepresentation(contactImageView.image!, 1.0)!)
+        contactInfo.setValue(imageData, forKeyPath: "contactImage")
+    
+        
+        // 4
+        do {
+            try SharedManager.sharedInstance.managedObjectContext().save()
+            contactDetails.append(contactInfo)
+            self.navigationController?.popViewController(animated: true)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
         }
+    }
+    
+    func updateContactDetails(){
+        contactInfo.firstName = firstnameTextField.text
+        contactInfo.lastName = lastNameTextField.text
+        contactInfo.emailId = emailTextField.text
+        let imageData =  NSData(data: UIImageJPEGRepresentation(contactImageView.image!, 1.0)!)
+        contactInfo.contactImage = imageData as Data
+        contactInfo.countryCode = countryTextField.text
+        contactInfo.phoneNumber = phoneNumberTextField.text
+        do {
+            try SharedManager.sharedInstance.managedObjectContext().save()
+            contactDetails.append(contactInfo)
+            self.navigationController?.popViewController(animated: true)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+//        self.navigationController?.popViewController(animated: true)
+    }
     //MARK:- UITextfield Delegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.tag == 4{
-        self.showDatePicker(textField: textField,datePickerMode:.date)
+            self.showDatePicker(textField: textField,datePickerMode:.date)
         }
         
     }
@@ -235,8 +276,8 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
             emailTextField.becomeFirstResponder()
         }else if textField == emailTextField{
             if self.isValidEmail(testStr: emailTextField.text!) == true{
-            emailTextField.resignFirstResponder()
-            phoneNumberTextField.becomeFirstResponder()
+                emailTextField.resignFirstResponder()
+                phoneNumberTextField.becomeFirstResponder()
             }else{
                 self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid email Id", with: "Cancel", action2Title: "Ok") {
                     self.emailTextField.becomeFirstResponder()
@@ -244,7 +285,7 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
             }
         }else if textField == phoneNumberTextField{
             if phoneNumberTextField.text!.isPhoneNumber == true{
-            phoneNumberTextField.resignFirstResponder()
+                phoneNumberTextField.resignFirstResponder()
             }else{
                 self.showTextAlertMessage(title:"ContactsApp", message: "Please enter valid Phone number", with: "Cancel", action2Title: "Ok") {
                     self.phoneNumberTextField.becomeFirstResponder()
@@ -269,7 +310,7 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         return true
     }
     func showDatePicker(textField: UITextField, datePickerMode:UIDatePickerMode){
-       
+        
         //ToolBar
         let toolbar = UIToolbar();
         toolbar.sizeToFit()
@@ -287,7 +328,7 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
         
     }
     @objc func donePicker(){
-   
+        
         //dismiss date picker dialog
         countryTextField.resignFirstResponder()
     }
@@ -298,9 +339,9 @@ class CAAddNewContactViewController: UIViewController,UITextFieldDelegate,UIImag
     }
     
     //MARK:_ UIPickerview delegates
-//    func numberOfComponentsInPickerView(pickerView: UIPickerView!) -> Int {
-//        return 1
-//    }
+    //    func numberOfComponentsInPickerView(pickerView: UIPickerView!) -> Int {
+    //        return 1
+    //    }
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

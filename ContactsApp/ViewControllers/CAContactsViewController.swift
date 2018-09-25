@@ -105,6 +105,15 @@ class CAContactsViewController: UIViewController,UITableViewDelegate,UITableView
             
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let addNewContactViewController = self.storyboard?.instantiateViewController(withIdentifier: "CAAddNewContactViewController") as! CAAddNewContactViewController
+        let personDetails = contactArray[indexPath.row]
+        addNewContactViewController.isContactInfoExist = true
+        addNewContactViewController.contactInfo = personDetails
+       // addNewContactViewController.addContactButton.setTitle("Update Contact", for: .normal)
+        self.navigationController?.pushViewController(addNewContactViewController, animated: true)
+    }
     //MARK:- IBAction methods
     @IBAction func addContact(_ sender: Any) {
     
