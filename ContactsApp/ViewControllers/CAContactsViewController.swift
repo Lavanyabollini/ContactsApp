@@ -37,9 +37,10 @@ class CAContactsViewController: UIViewController,UITableViewDelegate,UITableView
         
         let fetchRequest =
             NSFetchRequest<NSManagedObject>(entityName: "ContactDetails")
-        
+        let managedObjectContext = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.parent = SharedManager.sharedInstance.managedObjectContext()
         do {
-            contactInformation = try SharedManager.sharedInstance.managedObjectContext().fetch(fetchRequest) as! [ContactDetails]
+            contactInformation = try managedObjectContext.fetch(fetchRequest) as! [ContactDetails]
             contactArray = contactInformation
             self.contactsListTableView.reloadData()
         } catch let error as NSError {
